@@ -1,4 +1,5 @@
 package com.mycompany.csc229_bst_example;
+
 /**
  *
  * @author MoaathAlrajab
@@ -7,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BinarySearchTree {
+
     private BstNode root;
 
     public boolean isEmpty() {
@@ -55,30 +57,89 @@ public class BinarySearchTree {
     }
 
     private void doInOrder(BstNode root) {
-
-        // ToDo 1: complete InOrder Traversal 
+        if (root == null) {
+            return;
+        }
+        doInOrder(root.getLeft());
+        System.out.println(root.getData());
+        doInOrder(root.getRight());
     }
-        public void preOrderTraversal() {
+
+    public void preOrderTraversal() {
         doPreOrder(this.root);
-        // ToDo 2: complete the pre-order travesal . 
+    }
+
+    public void doPreOrder(BstNode root) {
+        if (root == null) {
+            return;
+        }
+        System.out.println(root.getData());
+        doPreOrder(root.getLeft());
+        doPreOrder(root.getRight());
     }
 
     public Integer findHeight() {
+        int height = 0;
+        BstNode node = this.root;
 
-        // ToDo 3: Find the height of a tree
+        Queue<BstNode> queue = new LinkedList<>();
+        queue.add(node);
+
+        if (root == null) {
+            return height;
+        }
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            height++;
+
+            while (size > 0) {
+                node = queue.remove();
+
+                if (node.getLeft() != null) {
+                    queue.add(node.getLeft());
+                }
+                if (node.getRight() != null) {
+                    queue.add(node.getRight());
+                }
+                size--;
+            }
+        }
+
+        return height;
     }
-
-    
 
     public int getDepth(BstNode node) {
         //ToDo 4: complete getDepth of a node 
+        int depth = 0;
+        BstNode currNode = root;
+
+        while (currNode != null) {
+            if (currNode.getData() == node.getData()) {
+                return depth;
+            } else if (node.getData() > currNode.getData()) {
+                currNode = currNode.getRight();
+            } else if (node.getData() < currNode.getData()) {
+                currNode = currNode.getLeft();
+            }
+
+            depth++;
+        }
+        return -1;
     }
-    
-   public void print() {
-       System.out.println("\n==== BST Print ===== \n");
-        print("", root, false);
+
+    public void print() {
+        System.out.println("\n==== BST Print ===== \n");
+        print(root, "");
         // ToDo 5: complete the print of the BST
     }
 
-
+    public void print(BstNode node, String str) {
+        if (node == null) {
+            return;
+        }
+        System.out.println(str + " + " + node.getData());
+        print(node.getLeft(), str + " ");
+        print(node.getRight(), str + " ");
+    } // each node is only visited once, O(n)
 }
